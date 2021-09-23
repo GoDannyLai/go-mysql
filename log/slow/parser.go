@@ -239,22 +239,41 @@ func (p *SlowLogParser) parseHeader(line string) {
 			p.logf("user (bad format)")
 			m := userRe.FindStringSubmatch(line)
 			p.event.User = m[1]
-			p.event.Host = m[3]
+			if len(m) > 3 {
+				if m[2] == "" {
+					p.event.Host = m[3]
+				}else{
+					p.event.Host = m[2]
+				}
+			}else{
+				p.event.Host = m[2]
+			}
+			
 			for mi := range m {
-				fmt.Printf("userhost arr[%d]: %s", mi, m[mi])
+				fmt.Printf("userhost arr[%d]: %s\n", mi, m[mi])
 			}
 		}
 	} else if strings.HasPrefix(line, "# User") {
 		p.logf("user")
 		m := userRe.FindStringSubmatch(line)
-		for mi := range m {
-			fmt.Printf("userhost arr[%d]: %s", mi, m[mi])
-		}
-		if len(m) < 4 {
+		if len(m) < 3 {
 			return
 		}
 		p.event.User = m[1]
-		p.event.Host = m[3]
+		if len(m) > 3 {
+			if m[2] == "" {
+				p.event.Host = m[3]
+			}else{
+				p.event.Host = m[2]
+			}
+		}else{
+			p.event.Host = m[2]
+		}
+			
+		for mi := range m {
+			fmt.Printf("userhost arr[%d]: %s\n", mi, m[mi])
+		}
+		
 		
 	} else if strings.HasPrefix(line, "# admin") {
 		p.parseAdmin(line)
