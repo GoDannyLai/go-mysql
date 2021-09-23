@@ -239,7 +239,8 @@ func (p *SlowLogParser) parseHeader(line string) {
 			p.logf("user (bad format)")
 			m := userRe.FindStringSubmatch(line)
 			p.event.User = m[1]
-			p.event.Host = m[2]
+			p.event.Host = m[3]
+			fmt.Println("userhost: ", m)
 		}
 	} else if strings.HasPrefix(line, "# User") {
 		p.logf("user")
@@ -248,7 +249,8 @@ func (p *SlowLogParser) parseHeader(line string) {
 			return
 		}
 		p.event.User = m[1]
-		p.event.Host = m[2]
+		p.event.Host = m[3]
+		fmt.Println("userhost: ", m)
 	} else if strings.HasPrefix(line, "# admin") {
 		p.parseAdmin(line)
 	} else {
