@@ -245,7 +245,7 @@ func (p *SlowLogParser) parseHeader(line string) {
 	} else if strings.HasPrefix(line, "# User") {
 		p.logf("user")
 		m := userRe.FindStringSubmatch(line)
-		if len(m) < 3 {
+		if len(m) < 4 {
 			return
 		}
 		p.event.User = m[1]
