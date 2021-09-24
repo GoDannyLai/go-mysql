@@ -39,7 +39,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/percona/go-mysql/test"
+	"github.com/GoDannyLai/go-mysql/test"
 )
 
 func TestParseDefaults(t *testing.T) {
