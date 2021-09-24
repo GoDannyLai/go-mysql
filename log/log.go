@@ -51,6 +51,7 @@ type Event struct {
 	Query         string    // SQL query or admin command
 	User          string
 	Host          string
+	ThreadId      string
 	Db            string
 	Server        string
 	LabelsKey     []string
