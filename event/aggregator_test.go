@@ -43,11 +43,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/percona/go-mysql/event"
-	"github.com/percona/go-mysql/log"
-	parser "github.com/percona/go-mysql/log/slow"
-	"github.com/percona/go-mysql/query"
-	"github.com/percona/go-mysql/test"
+	"github.com/GoDannyLai/go-mysql/event"
+	"github.com/GoDannyLai/go-mysql/log"
+	parser "github.com/GoDannyLai/go-mysql/log/slow"
+	"github.com/GoDannyLai/go-mysql/query"
+	"github.com/GoDannyLai/go-mysql/test"
 )
 
 var (
