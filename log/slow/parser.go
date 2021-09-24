@@ -49,7 +49,9 @@ import (
 var (
 	timeRe    = regexp.MustCompile(`Time: (\S+\s{1,2}\S+)`)
 	timeNewRe = regexp.MustCompile(`Time:\s+(\d{4}-\d{2}-\d{2}\S+)`)
-	userRe    = regexp.MustCompile(`User@Host: ([^\[]+|\[[^[]+\]).*?@ (\S*) \[(.*)\]`)
+	//danny modify: adding match of thread id
+	userRe := regexp.MustCompile(`User@Host: ([^\[]+|\[[^[]+\]).*?@ (\S*) \[(.*)\](?i:\s+Id:\s*(\d+))?`)
+	//userRe    = regexp.MustCompile(`User@Host: ([^\[]+|\[[^[]+\]).*?@ (\S*) \[(.*)\]`)
 	schema    = regexp.MustCompile(`Schema: +(.*?) +Last_errno:`)
 	headerRe  = regexp.MustCompile(`^#\s+[A-Z]`)
 	metricsRe = regexp.MustCompile(`(\w+): (\S+|\z)`)
@@ -239,16 +241,16 @@ func (p *SlowLogParser) parseHeader(line string) {
 			p.logf("user (bad format)")
 			m := userRe.FindStringSubmatch(line)
 			p.event.User = m[1]
-			if len(m) > 3 {
-				if m[2] == "" {
-					p.event.Host = m[3]
-				}else{
-					p.event.Host = m[2]
-				}
+			//danny modify: correct host match
+			if m[2] == "" {
+				p.event.Host = m[3]
 			}else{
 				p.event.Host = m[2]
 			}
-			
+			//danny modify: add thread id match
+			if m[4] != "" {
+				p.event.ThreadId=m[4]
+			}
 			for mi := range m {
 				fmt.Printf("userhost arr[%d]: %s\n", mi, m[mi])
 			}
@@ -260,16 +262,16 @@ func (p *SlowLogParser) parseHeader(line string) {
 			return
 		}
 		p.event.User = m[1]
-		if len(m) > 3 {
-			if m[2] == "" {
-				p.event.Host = m[3]
-			}else{
-				p.event.Host = m[2]
-			}
+		//danny modify: correct host match
+		if m[2] == "" {
+			p.event.Host = m[3]
 		}else{
 			p.event.Host = m[2]
 		}
-			
+		//danny modify: add thread id match
+		if m[4] != "" {
+			p.event.ThreadId=m[4]
+		}
 		for mi := range m {
 			fmt.Printf("userhost arr[%d]: %s\n", mi, m[mi])
 		}
